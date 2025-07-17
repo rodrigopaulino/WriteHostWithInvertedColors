@@ -1,4 +1,4 @@
-function global::Write-Host {
+function Write-Host {
     <#
     .SYNOPSIS
     Writes a string to the console with optional inverted colors.
@@ -46,15 +46,15 @@ function global::Write-Host {
         }
     }
 
-    $Args = @{}
+    $Arguments = @{}
     
-    if ($Object -ne $Null) { $Args['Object'] = $Object }
-    $Args['ForegroundColor'] = $ForegroundColor
-    $Args['BackgroundColor'] = $BackgroundColor
-    if ($NoNewLine.IsPresent) { $Args['NoNewLine'] = $NoNewLine }
-    if ($Separator -ne $null) { $Args['Separator'] = $Separator }
+    if ($Null -ne $Object) { $Arguments['Object'] = $Object }
+    $Arguments['ForegroundColor'] = $ForegroundColor
+    $Arguments['BackgroundColor'] = $BackgroundColor
+    if ($NoNewLine.IsPresent) { $Arguments['NoNewLine'] = $NoNewLine }
+    if ($Separator -ne $null) { $Arguments['Separator'] = $Separator }
     
-    Microsoft.PowerShell.Utility\Write-Host @Args
+    Microsoft.PowerShell.Utility\Write-Host @Arguments
 }
 
 Export-ModuleMember -Function Write-Host
