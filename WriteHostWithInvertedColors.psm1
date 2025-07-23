@@ -17,11 +17,11 @@ function Write-Host {
         [Switch]$InvertColors = $False
     )
 
-    $IsWinOS = $IsWindows -or $PSVersionTable.Platform -eq 'Win32NT'
+    $IsWinOS = $IsWindows -or [Environment]::OSVersion.Platform -eq 'Win32NT'
 
     if ($Null -eq $ForegroundColor) {
         if ($IsWinOS) {
-            $ForegroundColor = [ConsoleColor]::ForegroundColor
+            $ForegroundColor = $Host.UI.RawUI.ForegroundColor
         } else {
             $ForegroundColor = "White"
         }
@@ -29,7 +29,7 @@ function Write-Host {
 
     if ($Null -eq $BackgroundColor) {
         if ($IsWinOS) {
-            $BackgroundColor = [ConsoleColor]::BackgroundColor
+            $BackgroundColor = $Host.UI.RawUI.BackgroundColor
         } else {
             $BackgroundColor = "Black"
         }
@@ -58,8 +58,8 @@ function Write-Host {
 
     if ($IsLegacyWin) {
         # Windows PowerShell 5.1: Use Write-Host with color parameters
-        if ($ForegroundColor) { $Arguments['ForegroundColor'] = $ForegroundColor }
-        if ($BackgroundColor) { $Arguments['BackgroundColor'] = $BackgroundColor }
+        if ($Null -eq $ForegroundColor) { $Arguments['ForegroundColor'] = $ForegroundColor }
+        if ($Null -eq $BackgroundColor) { $Arguments['BackgroundColor'] = $BackgroundColor }
         if ($Null -eq $Separator) { $Arguments['Separator'] = $Separator }
     } else {
         # PowerShell 7+ or non-Windows: Use ANSI escape codes to avoid trailing background
